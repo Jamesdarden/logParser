@@ -1,0 +1,458 @@
+
+const pup = [
+  {
+      regex: /.+\s1ClickDownload\s.+/gi,
+      info: '1ClickDownload was found in line'
+    },
+    {
+      regex: /.+\sMyPcBackup\s.+/gi,
+      info: 'MyPcBackup was found in line'
+    },
+    {
+      regex: /.+\ssystem mechanic\s.+/gi,
+      info: 'system mechanic was found in line'
+    },
+    {
+      regex: /.+\sMyCleanPC\s.+/gi,
+      info: 'MyCleanPC  was found in line'
+    },
+    {
+      regex: /.+\sPC Optimizer Pro\s.+/gi,
+      info: 'PC Optimizer Pro  was found in line'
+    },
+    {
+      regex: /.+\s?torrent\s?.+/gi,
+      info: 'Possible torrent app installed'
+    },
+    { regex: /.+\s215Apps\s.+/gi, info: '215Apps was found in line' },  
+    {
+      regex: /.+\sMySearchDial\s.+/gi,
+      info: 'MySearchDial was found in line'
+    },
+    { regex: /.+\s22Find\s.+/gi, info: '22Find was found in line' },    
+    {
+      regex: /.+\sMyWebSearch\s.+/gi,
+      info: 'MyWebSearch was found in line'
+    },
+    { regex: /.+\sAartemis\s.+/gi, info: 'Aartemis was found in line' },
+    {
+      regex: /.+\sNationZoom\s.+/gi,
+      info: 'NationZoom was found in line'
+    },
+    {
+      regex: /.+\sAd.yieldmanager\s.+/gi,
+      info: 'Ad.yieldmanager was found in line'
+    },
+    {
+      regex: /.+\sNattly Search\s.+/gi,
+      info: 'Nattly Search was found in line'
+    },
+    { regex: /.+\sAdlyrics\s.+/gi, info: 'Adlyrics was found in line' },
+    {
+      regex: /.+\sNetwork System Driver\s.+/gi,
+      info: 'Network System Driver was found in line'
+    },
+    {
+      regex: /.+\sAwesomehp.com\s.+/gi,
+      info: 'Awesomehp.com was found in line'
+    },
+    {
+      regex: /.+\sNew Player\s.+/gi,
+      info: 'New Player was found in line'
+    },
+    { regex: /.+\sBablyon\s.+/gi, info: 'Bablyon was found in line' },
+    { regex: /.+\sOminent\s.+/gi, info: 'Ominent was found in line' },
+    {
+      regex: /.+\sBandoo Media\s.+/gi,
+      info: 'Bandoo Media was found in line'
+    },
+    { regex: /.+\sOpenCandy\s.+/gi, info: 'OpenCandy was found in line' },
+    { regex: /.+\sBit89\s.+/gi, info: 'Bit89 was found in line' },
+    { regex: /.+\sOtShot\s.+/gi, info: 'OtShot was found in line' },
+    { regex: /.+\sBoxore\s.+/gi, info: 'Boxore was found in line' },
+    { regex: /.+\sOutfox TV\s.+/gi, info: 'Outfox TV was found in line' },
+    {
+      regex: /.+\sBrowsers_Apps_Pro\s.+/gi,
+      info: 'Browsers_Apps_Pro was found in line'
+    },
+    { regex: /.+\sOutobox\s.+/gi, info: 'Outobox was found in line' },
+    {
+      regex: /.+\sBubbleDock\s.+/gi,
+      info: 'BubbleDock was found in line'
+    },
+    {
+      regex: /.+\sPC Powerspeed\s.+/gi,
+      info: 'PC Powerspeed was found in line'
+    },
+    {
+      regex: /.+\sBuenoSearch\s.+/gi,
+      info: 'BuenoSearch was found in line'
+    },
+    { regex: /.+\sPCSpeedUp\s.+/gi, info: 'PCSpeedUp was found in line' },
+    {
+      regex: /.+\sBuzzSearch\s.+/gi,
+      info: 'BuzzSearch was found in line'
+    },
+    {
+      regex: /.+\sPerion Network Ltd.\s.+/gi,
+      info: 'Perion Network Ltd. was found in line'
+    },
+    { regex: /.+\sCartwheel\s.+/gi, info: 'Cartwheel was found in line' },
+    {
+      regex: /.+\sPic Enhance\s.+/gi,
+      info: 'Pic Enhance was found in line'
+    },
+    { regex: /.+\sCheckMeUp\s.+/gi, info: 'CheckMeUp was found in line' },
+    {
+      regex: /.+\sPrice Minus\s.+/gi,
+      info: 'Price Minus was found in line'
+    },
+    {
+      regex: /.+\sCinema Plus\s.+/gi,
+      info: 'Cinema Plus was found in line'
+    },
+    {
+      regex: /.+\sPriceLEess\s.+/gi,
+      info: 'PriceLEess was found in line'
+    },
+    {
+      regex: /.+\sClaro   Quone8\s.+/gi,
+      info: 'Claro \tQuone8 was found in line'
+    },
+    {
+      regex: /.+\sCloudScout Parental Control\s.+/gi,
+      info: 'CloudScout Parental Control was found in line'
+    },
+    { regex: /.+\sQvo6\s.+/gi, info: 'Qvo6 was found in line' },
+    { regex: /.+\sConduit\s.+/gi, info: 'Conduit was found in line' },
+    {
+      regex: /.+\sResoft Ltd.\s.+/gi,
+      info: 'Resoft Ltd. was found in line'
+    },
+    {
+      regex: /.+\sCoupon Printer for Win\s.+/gi,
+      info: 'Coupon Printer for Win was found in line'
+    },
+    {
+      regex: /.+\sRocketfuel Installer\s.+/gi,
+      info: 'Rocketfuel Installer was found in line'
+    },
+    {
+      regex: /.+\sCouponDropDown  Safe Search\s.+/gi,
+      info: 'CouponDropDown \tSafe Search was found in line'
+    },
+    {
+      regex: /.+\sCrossrider\s.+/gi,
+      info: 'Crossrider was found in line'
+    },
+    { regex: /.+\sSalesPlus\s.+/gi, info: 'SalesPlus was found in line' },
+    { regex: /.+\sDealcabby\s.+/gi, info: 'Dealcabby was found in line' },
+    { regex: /.+\sSalus\s.+/gi, info: 'Salus was found in line' },
+    { regex: /.+\sDealio\s.+/gi, info: 'Dealio was found in line' },
+    {
+      regex: /.+\sSave Daily Deals\s.+/gi,
+      info: 'Save Daily Deals was found in line'
+    },
+    {
+      regex: /.+\sDefaulttab\s.+/gi,
+      info: 'Defaulttab was found in line'
+    },
+    { regex: /.+\sSavefier\s.+/gi, info: 'Savefier was found in line' },
+    {
+      regex: /.+\sDelta_Homes\s.+/gi,
+      info: 'Delta_Homes was found in line'
+    },
+    { regex: /.+\sSavepass\s.+/gi, info: 'Savepass was found in line' },
+    {
+      regex: /.+\sDesktop Temperature Monitor\s.+/gi,
+      info: 'Desktop Temperature Monitor was found in line'
+    },
+    {
+      regex: /.+\sSavepath Deals\s.+/gi,
+      info: 'Savepath Deals was found in line'
+    },
+    {
+      regex: /.+\sDns Unlocker\s.+/gi,
+      info: 'Dns Unlocker was found in line'
+    },
+    {
+      regex: /.+\sScorpinSaver\s.+/gi,
+      info: 'ScorpinSaver was found in line'
+    },
+    { regex: /.+\sEazel\s.+/gi, info: 'Eazel was found in line' },
+    {
+      regex: /.+\sSearch.Certified\s.+/gi,
+      info: 'Search.Certified was found in line'
+    },
+    { regex: /.+\sEn.V9\s.+/gi, info: 'En.V9 was found in line' },
+    {
+      regex: /.+\sSearch.ueep\s.+/gi,
+      info: 'Search.ueep was found in line'
+    },
+    { regex: /.+\sFacemoods\s.+/gi, info: 'Facemoods was found in line' },
+    {
+      regex: /.+\sSearch.yac.mx\s.+/gi,
+      info: 'Search.yac.mx was found in line'
+    },
+    {
+      regex: /.+\sFinallyFast\s.+/gi,
+      info: 'FinallyFast was found in line'
+    },
+    { regex: /.+\sSearchqu\s.+/gi, info: 'Searchqu was found in line' },
+    {
+      regex: /.+\sFindWideSearch\s.+/gi,
+      info: 'FindWideSearch was found in line'
+    },
+    {
+      regex: /.+\sSecure Trusted\s.+/gi,
+      info: 'Secure Trusted was found in line'
+    },
+    {
+      regex: /.+\sFreeSoftToday\s.+/gi,
+      info: 'FreeSoftToday was found in line'
+    },
+    {
+      regex: /.+\sSeverWeatherAlerts\s.+/gi,
+      info: 'SeverWeatherAlerts was found in line'
+    },
+    { regex: /.+\sFunmoods\s.+/gi, info: 'Funmoods was found in line' },
+    {
+      regex: /.+\sSlowPCFighter\s.+/gi,
+      info: 'SlowPCFighter was found in line'
+    },
+    { regex: /.+\sGenieo\s.+/gi, info: 'Genieo was found in line' },
+    { regex: /.+\sSm23mS\s.+/gi, info: 'Sm23mS was found in line' },
+    { regex: /.+\sGolsearch\s.+/gi, info: 'Golsearch was found in line' },
+    { regex: /.+\sSofttango\s.+/gi, info: 'Softtango was found in line' },
+    { regex: /.+\sHao123\s.+/gi, info: 'Hao123 was found in line' },
+    {
+      regex: /.+\sSomoto Ltd.\s.+/gi,
+      info: 'Somoto Ltd. was found in line'
+    },
+    { regex: /.+\sHD-V2.2\s.+/gi, info: 'HD-V2.2 was found in line' },
+    {
+      regex: /.+\sSpeedupmypc\s.+/gi,
+      info: 'Speedupmypc was found in line'
+    },
+    {
+      regex: /.+\sHostSecurePlugin\s.+/gi,
+      info: 'HostSecurePlugin was found in line'
+    },
+    { regex: /.+\sSpigot\s.+/gi, info: 'Spigot was found in line' },
+    {
+      regex: /.+\sIAC Search & Media\s.+/gi,
+      info: 'IAC Search & Media was found in line'
+    },
+    { regex: /.+\sSS8\s.+/gi, info: 'SS8 was found in line' },
+    { regex: /.+\sIlivid\s.+/gi, info: 'Ilivid was found in line' },
+    {
+      regex: /.+\sStrongvault\s.+/gi,
+      info: 'Strongvault was found in line'
+    },
+    { regex: /.+\sIminent\s.+/gi, info: 'Iminent was found in line' },
+    { regex: /.+\sSuperfish\s.+/gi, info: 'Superfish was found in line' },
+    {
+      regex: /.+\sIncredibar\s.+/gi,
+      info: 'Incredibar was found in line'
+    },
+    { regex: /.+\sSweetIM\s.+/gi, info: 'SweetIM was found in line' },
+    { regex: /.+\sInfoadams\s.+/gi, info: 'Infoadams was found in line' },
+    {
+      regex: /.+\sSweetpacks\s.+/gi,
+      info: 'Sweetpacks was found in line'
+    },
+    { regex: /.+\sInfoSpace\s.+/gi, info: 'InfoSpace was found in line' },
+    {
+      regex: /.+\sTarma Installer\s.+/gi,
+      info: 'Tarma Installer was found in line'
+    },
+    {
+      regex: /.+\sInstallBrain\s.+/gi,
+      info: 'InstallBrain was found in line'
+    },
+    {
+      regex: /.+\sTranslategenius\s.+/gi,
+      info: 'Translategenius was found in line'
+    },
+    {
+      regex: /.+\sInternetCorkBoard\s.+/gi,
+      info: 'InternetCorkBoard was found in line'
+    },
+    { regex: /.+\sTuvaro\s.+/gi, info: 'Tuvaro was found in line' },
+    { regex: /.+\sIsearch\s.+/gi, info: 'Isearch was found in line' },
+    { regex: /.+\sVgrabber\s.+/gi, info: 'Vgrabber was found in line' },
+    {
+      regex: /.+\sJfileManager 7\s.+/gi,
+      info: 'JfileManager 7 was found in line'
+    },
+    {
+      regex: /.+\sVisicom Media Inc.\s.+/gi,
+      info: 'Visicom Media Inc. was found in line'
+    },
+    {
+      regex: /.+\sJollyWallet\s.+/gi,
+      info: 'JollyWallet was found in line'
+    },
+    { regex: /.+\sVPlay\s.+/gi, info: 'VPlay was found in line' },
+    {
+      regex: /.+\sLevel Quality Watcher\s.+/gi,
+      info: 'Level Quality Watcher was found in line'
+    },
+    { regex: /.+\sWajam\s.+/gi, info: 'Wajam was found in line' },
+    {
+      regex: /.+\sMediaVideosPlayers\s.+/gi,
+      info: 'MediaVideosPlayers was found in line'
+    },
+    {
+      regex: /.+\sWeb Assistant\s.+/gi,
+      info: 'Web Assistant was found in line'
+    },
+    {
+      regex: /.+\sMindspark Interactive\s.+/gi,
+      info: 'Mindspark Interactive was found in line'
+    },
+    {
+      regex: /.+\sWebCake Deals & Ad’s\s.+/gi,
+      info: 'WebCake Deals & Ad’s was found in line'
+    },
+    {
+      regex: /.+\sMonterra Inc.\s.+/gi,
+      info: 'Monterra Inc. was found in line'
+    },
+    {
+      regex: /.+\sWhitesmoke\s.+/gi,
+      info: 'Whitesmoke was found in line'
+    },
+    {
+      regex: /.+\sMoshe Caspi\s.+/gi,
+      info: 'Moshe Caspi was found in line'
+    },
+    {
+      regex: /.+\sWord Proser\s.+/gi,
+      info: 'Word Proser was found in line'
+    },
+    {
+      regex: /.+\sMyBrowserbar\s.+/gi,
+      info: 'MyBrowserbar was found in line'
+    },
+    { regex: /.+\sYontoo\s.+/gi, info: 'Yontoo was found in line' },
+    {
+      regex: /.+\sMyInfotopia\s.+/gi,
+      info: 'MyInfotopia was found in line'
+    },
+    { regex: /.+\sZugo Ltd\s.+/gi, info: 'Zugo Ltd was found in line' }
+]
+
+const av = [
+  {regex:/.+\savast\s.+/gi, info:"avast antivirus"},
+  {regex:/.+\sAVG\s.+/gi, info:"AVG antivirus"},
+  {regex:/.+\sAvira\s.+/gi, info:"Avira antivirus"},
+  {regex:/.+\sBitdefender\s.+/gi, info:"Bitdefender antivirus"},
+  {regex:/.+\sZoneAlarm\s.+/gi, info:"ZoneAlarm antivirus"},
+  {regex:/.+\sImmunet\s.+/gi, info:"Immunet antivirus"},
+  {regex:/.+\sClamWin\s.+/gi, info:"ClamWin antivirus"},
+  {regex:/.+\sComodo\s.+(antivirus|security)*.+/gi, info:"Comodo antivirus"},
+  {regex:/.+\sDr.Web\s.+(antivirus|security)*.+/gi, info:"Dr.Web antivirus"},
+  {regex:/.+\sESET\s.+(antivirus|security)*.+/gi, info:"ESET antivirus"},
+  {regex:/.+\sNorton\s.+(antivirus|security)*.+/gi, info:"Norton lifelock antivirus"},
+  {regex:/.+\sMcAfee\s.+(antivirus|security)*.+/gi, info:"McAfee antivirus"},
+  {regex:/.+\sPanda\s.+(antivirus|security)*.+/gi, info:"Panda antivirus"},
+  {regex:/.+\sF-Secure\s.+(antivirus|safe)*.+/gi, info:"F-Secure antivirus"},
+  {regex:/.+\sG DATA\s.+(antivirus|Security)*.+/gi, info:"G DATA antivirus"},
+  {regex:/.+\sSophos\s.+(antivirus|protection)*.+/gi, info:"Sophos antivirus"},
+  {regex:/.+\sTitanium\s.+(antivirus|protection)*.+/gi, info:"Trend Micro antivirus"},
+  {regex:/.+\sF-PROT\s.+/gi, info:"F-PROT antivirus"},
+  {regex:/.+\sFortiClient\s.+/gi, info:"FortiClient antivirus"},
+  {regex:/.+Spyware Doctor with AntiVirus.+/gi, info:"Norton lifelock antivirus"},
+  {regex:/.+\sKaspersky\s.+(security)*.+/gi, info:"Kaspersky antivirus"},
+  {regex:/.+\s360 Total\s.+(security)*.+/gi, info:"Qihoo 360 antivirus"},
+  {regex:/.+\sNANO\s.+(antivirus)*.+/gi, info:"NANO antivirus"},
+  {regex:/.+\sVba32\s.+(antivirus)*.+/gi, info:"VirusBlokAda antivirus"},
+  {regex:/.+\sTrustPort\s.+(antivirus|security|protection)*.+/gi, info:"TrustPort antivirus"},
+]
+
+
+
+var internetInfo = [
+  {regex:/^.+Ping statistics.*[\r\n\s\S]{2}.+(packets:).+[\s\S].*[\s\S].+/img , info:"Ping statistics"},
+  {regex:/({"requestedHost").+(:".*")/ig , info:"Ping Results" },
+  {regex:/({"downloadspeed").+bwserverid.*("?:\d*"?})/ig , info:"BandWidth stats"},
+  {regex:/.*(time\s?outs).*/ig , info:"TimeOuts"},
+]
+var scanInfo = [
+  {regex:/^.+[\r\n\s\S]{2}?(\d{2}:\d{2}:\d{2}:\s)(trace file).*[\r\n\s\S]{2}.+/gim , info:"Trace file opened"}, // grabs line before and after trace file // probobly will need to tweek
+  {regex:/^.+(skipping).*(function).+/igm , info:"Tests that were skipped"}, // find skipping function logic 
+  {regex:/^.*(av control).*/igm , info:"Av3 control status. If not up to date exterminate scan will skip or fail"} ,
+  {regex:/^.*(email).*(exit).*(ok)?.*/igm , info:"Email sent?"} ,
+  
+
+]
+var scheduledScan = [
+  //{regex:/^.+(skipping).*(function).*[\s\S].+/igm , info:"Tests that were skipped"},
+  {regex:/^.*(Results from email.asp).*/igm , info:"Will let you know if schedule scan email was sent"} ,
+  {regex:/.*(Emailing results to:).*[\r\n\s\S]{2}.+/igm , info:"Email results"} ,
+  {regex:/^.*(Scheduler Exit:).*/igm , info:"Will let you know if schedule scan finished with no problem"} ,
+  {regex:/.+(doneTestingShowDashboard)[\r\n\s\S]{2}.*emailing\sresults.+/ig , info:"Scan successfully completed"} ,
+  {regex:/^.*(ajax POST to https:\/\/utilities.pcpitstop.com\/Nirvana\/SaveScheduledScanEventLog\.asp).*[\s\S].+/igm , info:"If error not equal to zero there was a problem posting results"} ,
+]
+
+var checkCheckScheduler = [
+  {regex:/.+(cannot update activex).+/ig,info:"Active X issues"},
+  {regex:/.+scan due in.+[\r\n\s\S]{2}.+/ig,info:"scheduler is working correctly if time is present </br> If 0 means that scan is not set or about to run"},
+  {regex:/.+(installed .net framework versions:).+/ig,info:"If everything is true .net is good"}
+]
+
+var protectionStatus =[
+  {regex:/.+(client received protection status)\s0.+/ig,info:"Green shield"},
+  {regex:/.+(client received protection status)\s1.+/ig,info:"vulnerable update available"},
+  {regex:/.+(client received protection status)\s2.+/ig,info:"Definitions updating"},
+  {regex:/.+(client received protection status)\s3.+/ig,info:"Definitions failed"},
+  {regex:/.+(client received protection status)\s4.+/ig,info:"Super Shield paused"},
+  {regex:/.+(client received protection status)\s5.+/ig,info:"Super shield not licensed"},
+  {regex:/.+(client received protection status)\s6.+/ig,info:"Super shield starting"},
+  {regex:/.+(client received protection status)\s7.+/ig,info:"Protection is off"},
+  {regex:/.+(client received protection status)\s8.+/ig,info:"RT service unavailable"},
+  {regex:/.+(client received protection status)\s9.+/ig,info:"Cannot connect to RT service"},
+]
+
+
+
+let logFileTypeMatches = {
+    ss: [
+        {regex:/.+(malware detected prompt).+[\r\n\s\S]{2}.+(prompt_dialog.cpp).+/igm ,description:"Malware detected prompts"},// not sure if this is correct. 
+        {regex:/.+(Customer).+[\r\n\s\S]{2}.+/ig ,description:"User Actions"},// not sure if this is correct. 
+        {regex:protectionStatus ,description:"Protection Status items"}// not sure if this is correct. 
+
+    ],
+    ScheduleScanLog: [
+      {regex:scanInfo ,description:"Potential Scan Issues"},
+      {regex:internetInfo ,description:"Internet"},
+      {regex: scheduledScan ,description:"Scheduled scan indicators"}
+    ],
+    checkScheduler:[
+        {regex:checkCheckScheduler ,description:"Check scheduler issues"}
+      
+       
+    ],
+    systemInfo:[
+        {regex: pup , description:"Potential PUPs"},
+        {regex: /.+vpn.+/gi, description: "VPN indications"},
+        {regex: av, description:"Av traces Found"},
+        {regex:/.+(windowsupdatefailure).+/gi, description:"Update Failures"},
+        {regex: /.+fault\sbucket.+/gi, description: "Fault Bucket Items"},
+        {regex: /\s{2}\d{12}\s1\s.+/g, description: "Critical Errors"},
+        {regex:/.+\ssecurityCenter\s.+/gi, description:"Security Center items"}
+    ],
+    pcmaticScanLog: [
+        {regex:scanInfo ,description:"Scan issues"},
+        {regex:internetInfo ,description:"Internet"}
+    ]
+}
+
+//logFileTypeMatches.systemInfo = [...logFileTypeMatches.systemInfo, ...avlist];
+
+
+
+
+module.exports = logFileTypeMatches;
+;

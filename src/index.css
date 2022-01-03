@@ -1,0 +1,226 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  position:relative;
+  margin: 0;
+ 
+  padding: 0;
+  min-width:  1200px;
+}
+
+:root {
+  --red : #E0091F;
+  --darkGray:#3C3C3B;
+  --backround:#F5F5F4;
+  --cyan:#09CDDB;
+  --blue:#1F76C2;
+}
+
+.alert{
+  height: 50px;
+  position: absolute;
+  margin: 20px 0;
+  top: 50px;
+}
+
+#searchbtn{
+  background-color: var(--blue);
+  color: white;
+  margin-top: -5px;
+}
+
+#clear{
+  background-color: #09CDDB;
+  padding: 0 10px;
+}
+
+.search{
+  margin: 30px;
+  color: white;
+  padding: 0 10px;
+}
+
+.informationText{
+ 
+  
+  font-weight: 600;
+  
+ 
+  padding: 30px;
+  width: 500px;
+}
+
+.container-fluid{
+  max-width: 100%;
+  background-color: hsla(60, 5%, 96%, 0.856); 
+}
+
+.hidden{
+  display: none;
+}
+
+.notFoundDiv{
+  color: black;
+  /* padding: 30px 0 20px 30px; */
+  margin-bottom: 30px;
+}
+
+.not-found{
+  color: white;
+  padding: 10px 0 10px 20px;
+}
+
+
+.title{
+  background-color: #E0091F;
+  border-radius: 5px;
+  color: #F5F5F4;
+  margin-bottom: 50px;
+  padding: 10px;
+  /* #b3d7fff5 */
+}
+
+.pup{
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.clearText{
+  margin-top: 40px;
+  text-decoration: underline;
+}
+
+.infoHeader{
+  margin-bottom: 0;
+  font-weight: bold;
+  text-decoration-line: underline;
+}
+
+.line{
+  font-size: 16px;
+  color: black;
+  font-weight: 500;
+}
+
+.line::first-line{
+  color: #2e75b3;
+  font-weight: 700;
+  
+}
+
+.header{
+  margin: 20px 0 0px 30px;
+}
+
+.bottom{
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+input[type=search]{
+  height: 40px;
+  border: 1px solid var(--blue);
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+
+
+
+
+html {
+  height: 100%;
+  background-color:#F5F5F4;
+}
+
+.loading {
+  background-image: radial-gradient(circle farthest-corner at center, #3C4B57 0%, #1C262B 100%);
+}
+
+.loading {
+  position: absolute;
+  left: 600px;
+  top: 400px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  perspective: 800px;
+}
+
+.loading::before{
+  content: "Loading";
+  position: absolute;
+  top: -75px;
+  left: -20px;
+  font-size: 50px;
+  animation-duration: 2s;
+  animation-name: blink;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  from {
+    opacity:0% ;
+    
+  
+  }
+
+  to {
+    opacity: 100%;
+   
+  }
+}
+.inner {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;  
+}
+
+.inner.one {
+  left: 0%;
+  top: 0%;
+  animation: rotate-one 1s linear infinite;
+  border-bottom: 3px solid #EFEFFA;
+}
+
+.inner.two {
+  right: 0%;
+  top: 0%;
+  animation: rotate-two 1s linear infinite;
+  border-right: 3px solid #EFEFFA;
+}
+
+.inner.three {
+  right: 0%;
+  bottom: 0%;
+  animation: rotate-three 1s linear infinite;
+  border-top: 3px solid #EFEFFA;
+}
+
+@keyframes rotate-one {
+  0% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-two {
+  0% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-three {
+  0% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+

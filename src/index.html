@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>PC Matic Log parser</title>
+   
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+   
+
+    
+    <!-- <script>window.$ = window.jQuery = require('jquery');</script> -->
+    <script src="./render.js" defer></script>
+    <link rel="stylesheet" href="index.css">
+    
+  </head>
+  <body>
+   
+      
+      <div class="container-fluid row" id="containerbody">
+        <div class="alert alert-warning alert-dismissible fade show float-right hidden" role="alert" id="empty">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4>search field cannot be empty</h4>
+        </div>
+        <div id="welcome">
+        <h2 class="center-text header">Welcome To the log parser!</h2>
+        <p class="informationText">Currently the log parser can analyze sysinfo.logs , SS logs "pcmatic_rt" , Check Scheduler logs "checkschedule[pcmatic]", Pc matic scan logs "pcmatic-date", Schedule scan logs "scan[pcmatic]"</p>
+        <button class="btn btn-outline-info container col-9 bottom" style="margin-left: 30px;width: 90%" onclick="unzipFile();">Unzip Log</button>
+        </div>
+    
+      
+        <div class="search hidden col-6 sticky-top btn " id="search" >
+          <input type="search" id="TextBox" name="TextBox" placeholder="search">
+          <button  id="searchbtn" type="button " class="btn btn-secondary" onclick="getValue();">
+            search
+          </button>
+         
+        </div>
+      
+      
+        <div id="loading" class="loading hidden">
+          <div class="inner one"></div>
+          <div class="inner two"></div>
+          <div class="inner three"></div>
+        </div>
+      
+      
+          <!-- <span class="btn btn-primary" >Click here to select logs</span> -->
+          <div id="content" class="container"></div>
+      
+    </div>
+
+    
+
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+   <script>
+     const electron = require('electron');
+      const {ipcRenderer, BrowserWindow} = electron;
+      
+     
+
+      document.addEventListener('click', (e)=>{
+        if(e.target && e.target.id == 'logfile'){
+          electron.ipcRenderer.send('reset', "log button clicked");
+        }
+      })
+
+     
+     // warning text field is empty
+      const emptyString = document.getElementById('empty');
+      emptyString.addEventListener('click', ()=>{
+        emptyString.classList.add('hidden');
+      })
+
+      // click function to send value in text box to main
+      function getValue (){
+        var searchBtnval = document.getElementById('TextBox').value;
+              if(searchBtnval){
+                electron.ipcRenderer.send('search', searchBtnval)
+              }
+              else
+              {
+                emptyString.classList.remove('hidden')
+              }
+        }
+
+      var searchBox = document.getElementById('search')
+      searchBox.addEventListener("keyup", (e)=>{
+        if(e.keyCode === 13){
+          getValue();
+        }
+      })  
+
+      function unzipFile(){
+        ipcRenderer.send('unzip', 'unzipFile');
+      }
+
+
+      ipcRenderer.on('fileUnzipped',(e,message)=>{
+        alert('Logfile has been extracted to your downloads folder. Please click select file to process the log.');
+      })
+     
+   
+  
+      // clear initial state once file has been selected
+     ipcRenderer.on('ready', (e,message)=>{
+      clearDomShowLoading();
+     })
+
+
+     // clears loading animation shows search bar
+     ipcRenderer.on('done', (e,message)=>{
+        const loading = document.querySelector('#loading');
+        const search= document.getElementById('search')
+        loading.classList.add('hidden');
+        search.classList.remove('hidden');
+    })
+    
+     // displays parsed log information
+    ipcRenderer.on('data', (event, arg) => {
+     
+      const container = document.getElementById("content") ;
+      container.innerHTML = arg.join("");
+     
+    })
+    
+   </script>
+  </body>
+ 
+</html>
