@@ -23,6 +23,7 @@ var options = {
 async function sendData(){
    const win = BrowserWindow.getAllWindows()[0];
    const data = await fileGetter()
+   console.log(data)
    win.webContents.send('data',data);
 }
 
@@ -171,7 +172,7 @@ function outputMatches(matches) {
 }
 function outputLine(matches) {
     const lineBreak = '\r\n<br><br>';
-   return matches.map( (line) => {return "<div class='pup'>"+ line  +"</div>" } ).join("")
+   return matches.map( (line) => {return "<div class='pup'>"+ line  +"</div>" + lineBreak } ).join("")
 }
 function outputNotPresent(matches) {
     const lineBreak = '\r\n<br>';
@@ -228,7 +229,8 @@ async function parseLog(file){
       var actualString = iconv.decode(buff, encoding).toString('utf8');
       var lines = actualString.split('\r\n');
       var lastTwoLines =lines[lines.length-3] + lines[lines.length-2] + lines[lines.length-1];
-      if(fileTypeMatch === "pcmaticScanLog" ){
+      var isPCMAticLog = fileTypeMatch === "pcmaticScanLog"?true:false;
+      if(isPCMAticLog){
          let lastLineElement = '<h3 class="title text-center">Last Two lines of Log</h3>' ;
          lastLineElement += "<p class='pup'>"+lastTwoLines+"</p>" ;
          indicators.push(lastLineElement);
@@ -244,14 +246,26 @@ async function parseLog(file){
          
             for(var j=0; j< logMatches[i].regex.length; j++){
 
+               
                // console.log(`inside secondary loop ${logMatches[i].regex[j]['regex']}`)
                if(matches = actualString.match(logMatches[i].regex[j]['regex']) ){
                   isMatch = true;
-                  //console.log(`--------> matches vlaue ${matches}`)
          
                   htmlElement += "<div>";
                   htmlElement += "<p class='infoHeader'>"+logMatches[i].regex[j]['info']+"</p>";
-                  htmlElement += `<p class="pup"> ${outputLine(matches)}<p>`;
+                  if(isPCMAticLog){
+               
+                     matches.map((line, index)=>
+                     {if(index ===0 && logMatches[i].regex[j]['info'] =="Scan Error"){
+                        return htmlElement += `<p class="pup"> ${matches[0].toString().replace(/\n/g,"<br><br>")}<p>`
+                     }else{
+                        return htmlElement += `<p class="pup"> ${outputLine(matches)}<p>`
+                     }})
+                     
+                  }else{
+                     htmlElement += `<p class="pup"> ${outputLine(matches)}<p>`;
+                  }
+              
                   htmlElement +="</div>";
                }
                   

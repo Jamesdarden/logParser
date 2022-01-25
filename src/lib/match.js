@@ -380,7 +380,7 @@ var internetInfo = [
   {regex:/.*(time\s?outs).*/ig , info:"TimeOuts"},
 ]
 var scanInfo = [
-  {regex:/^.+[\r\n\s\S]{2}?(\d{2}:\d{2}:\d{2}:\s)(trace file).*[\r\n\s\S]{2}.+/gim , info:"Trace file opened"}, // grabs line before and after trace file // probobly will need to tweek
+  {regex:/^(====Error at )[\s\S\r\n]+(==== End Error Sysinfo ====)$/gim , info:"Scan Error"}, // grabs line before and after trace file // probobly will need to tweek
   {regex:/^.+(skipping).*(function).+/igm , info:"Tests that were skipped"}, // find skipping function logic 
   {regex:/^.*(av control).*/igm , info:"Av3 control status. If not up to date exterminate scan will skip or fail"} ,
   {regex:/^.*(email).*(exit).*(ok)?.*/igm , info:"Email sent?"} ,
