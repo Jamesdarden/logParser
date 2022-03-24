@@ -7,7 +7,7 @@ const {
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
-const { fileGetter } = require("./lib/dialog");
+const { fileGetter } = require("./lib/dialog.js");
 //require('v8-compile-cache');
 
 // DISABLE_V8_COMPILE_CACHE=1

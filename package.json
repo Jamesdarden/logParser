@@ -80,6 +80,7 @@
     "electron-builder-squirrel-windows": "^22.11.11",
     "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",
+    "fs.promises": "^0.1.2",
     "iconv-lite": "*",
     "npx": "^3.0.0",
     "os-utils": "^0.0.14",

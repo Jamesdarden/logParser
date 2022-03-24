@@ -1,15 +1,15 @@
-const {app, dialog, ipcMain, BrowserWindow} = require('electron');
+const { app, dialog, ipcMain, BrowserWindow } = require('electron');
 
-const {fs, readdirSync, renameSync }= require('fs');
-const path = require('path');
+const { fs, readdirSync, renameSync } = require('fs');
+const { join } = require('path');
 const Regex = require('regex');
-const fsp = require('fs/promises');
-const chardet = require('chardet');
-const iconv = require('iconv-lite');
-const matchFinder = require('./match');
+const { readFile } = require('fs/promises');
+const { detect } = require('chardet');
+const { decode } = require('iconv-lite');
+const {logFileTypeMatches} = require('./match.js');
 const win = BrowserWindow.getAllWindows()[0];
-const unzipper = require('unzipper');
-const { pcmaticScanLog } = require('./match');
+const { Open } = require('unzipper');
+// import { pcmaticScanLog } from './match.js';/
 
 
 var options = {
@@ -52,7 +52,7 @@ async function unzip(){
          const file = await dialog.showOpenDialog(settings);
          if(typeof file.filePaths !== 'undefined' && file.canceled !== true){
             //console.log('file selected')
-            await unzipper.Open.file(file.filePaths.toString())
+            await Open.file(file.filePaths.toString())
                .then(d => d.extract({path:app.getPath("downloads")}));
             // const timeDone = new Date()
             const files = readdirSync(app.getPath("downloads"));
@@ -62,8 +62,8 @@ async function unzip(){
             log = log[0];
             //console.log("log---->: "+log)
             let datenow = new Date();
-            let filePath = path.join(app.getPath("downloads"), log.toString());
-            let newFilePath = path.join(app.getPath("downloads"), log.toString()+"_"+ datenow.getMonth()+1 +"_"+ datenow.getDay()+"_"+ datenow.getHours()+"_"+ datenow.getMinutes());
+            let filePath = join(app.getPath("downloads"), log.toString());
+            let newFilePath = join(app.getPath("downloads"), log.toString()+"_"+ datenow.getMonth()+1 +"_"+ datenow.getDay()+"_"+ datenow.getHours()+"_"+ datenow.getMinutes());
            // console.log('old path --->'+filePath)
            // console.log('new path --->'+newFilePath)
        
@@ -125,17 +125,27 @@ async function fileGetter () {
       
          let filePathResults = await dialog.showOpenDialog( options);
          // ipcRenderer.send('ready', 'logfileselected')
+         
         
          
          if(typeof filePathResults.filePaths !== 'undefined' && filePathResults.canceled !== true) {
+            const logDirectory = filePathResults.filePaths[0] 
+            // var path = logDirectory.toString()
+            // console.log(path,"tostring method")
+            path = logDirectory.split(/\\/g)
+            var pathToDirectory = path.slice(0,-1).join("\\")
+            console.log(pathToDirectory +"\\","dialog.js")
+            module.exports.pathToDirectory = pathToDirectory+"\\" 
+            // console.log(filePathResults.filePaths[0],"------------..............-.-")
             const browserWindow = BrowserWindow.getAllWindows()[0];
             browserWindow.webContents.send('ready','logfileSelected')
+            return parseLog(logDirectory)
             
-            for(let i = 0; i < filePathResults.filePaths.length; i++){
-               let filepath = filePathResults.filePaths[i]
+            // for(let i = 0; i < filePathResults.filePaths.length; i++){
+            //    let filepath = filePathResults.filePaths[i]
              
-               return parseLog(filepath)
-               }
+            //    return parseLog(filepath)
+            //    }
             }
          else
             { 
@@ -211,7 +221,7 @@ async function parseLog(file){
   indicators.push(`<h4 class="mb-4">${nameAllCaps?nameAllCaps:""}</h4>`)
    //benchmark('getFileTypeMatches', 'start');
    var fileTypeMatch = getFileTypeMatches(file);// working as expected returns key
-   //console.log(`----%%^^^^^filetype Match ${fileTypeMatch} `)
+   console.log(`----%%^^^^^filetype Match ${fileTypeMatch} `)
    if(fileTypeMatch === "unknown") {
       indicators.push("<h2>The logParser is not set to read "+ nameToDisplay+ " at this time</h2><button id='logfile' class='btn btn-outline-primary'>Choose Another Logfile</button>")
       const window = BrowserWindow.getAllWindows()[0];
@@ -219,14 +229,19 @@ async function parseLog(file){
       return indicators;
    }
 
-   var logMatches = matchFinder[fileTypeMatch]; //access the correct key in match finder 
-   
+   var logMatches = logFileTypeMatches[fileTypeMatch]; //access the correct key in match finder 
+   // console.log(logMatches)
 
    try {
-      const bufferData = await fsp.readFile(file);
+      //grab file
+      const bufferData = await readFile(file);
+      //loads file into memory
       var buff = Buffer.from(bufferData);
-      var encoding = chardet.detect(buff);
-      var actualString = iconv.decode(buff, encoding).toString('utf8');
+      //detects document enconding
+      var encoding = detect(buff);
+      //changes enconding if not utf8
+      var actualString = decode(buff, encoding).toString('utf8');
+      
       var lines = actualString.split('\r\n');
       var lastTwoLines =lines[lines.length-3] + lines[lines.length-2] + lines[lines.length-1];
       var isPCMAticLog = fileTypeMatch === "pcmaticScanLog"?true:false;
@@ -280,10 +295,10 @@ async function parseLog(file){
                indicators.push(htmlElement);
             }      
          
-         } else {
+         } else if (typeof(logMatches[i]['regex']) == 'object') {
 
             if(matches = actualString.match(logMatches[i]['regex'])) {
-
+e
 
                // console.log(`in last array looooop----> ${logMatches[i].regex}`)
                var htmlElement = '<div class=" log">';
@@ -295,6 +310,18 @@ async function parseLog(file){
                var htmlElement = '<h5 class="not-found bg-success">No ' + logMatches[i]['description'] + ' found in current Log</h5>';
                notFoundItems.push(htmlElement)
             }
+         } else if (typeof(logMatches[i]['regex']) == "function"){
+            var _results = logMatches[i]['regex']()
+            var elements = []
+            for(let i=0; i < _results.length ; i++){
+               var htmlElement = '<div class=" log">';
+               htmlElement += '<h3 class="title text-center">' + logMatches[i]['description'] + '</h3>';
+               htmlElement += '<p class="info ">'+ outputMatches(matches)  +'</p>';
+               htmlElement += '</div>';
+               indicators.push(htmlElement) 
+
+            }
+            indicators.push(elements)
          }
       }
       //console.log(`Before push to renderer process---->`)
@@ -309,5 +336,6 @@ async function parseLog(file){
   
 }
 
-module.exports.fileGetter = fileGetter;
+// const _fileGetter = fileGetter;
+module.exports.fileGetter = fileGetter ;
 
