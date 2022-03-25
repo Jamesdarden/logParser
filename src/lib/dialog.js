@@ -178,7 +178,7 @@ function getFileTypeMatches(fileName) {
 
 function outputMatches(matches) {
     const lineBreak = '\r\n<br><br>';
-   return matches.map( (line) => {return "<div class='line'>"+ line  +"</div>" + lineBreak} ).join("")
+    if(Array.isArray(matches)){ return matches.map( (line) => {return "<div class='line'>"+ line  +"</div>" + lineBreak} ).join("")}else return matches 
 }
 function outputLine(matches) {
     const lineBreak = '\r\n<br><br>';
@@ -311,12 +311,13 @@ e
                notFoundItems.push(htmlElement)
             }
          } else if (typeof(logMatches[i]['regex']) == "function"){
-            var _results = logMatches[i]['regex']()
+            var _results = await logMatches[i]['regex']()
+            console.log(_results, "results from function")
             var elements = []
             for(let i=0; i < _results.length ; i++){
                var htmlElement = '<div class=" log">';
-               htmlElement += '<h3 class="title text-center">' + logMatches[i]['description'] + '</h3>';
-               htmlElement += '<p class="info ">'+ outputMatches(matches)  +'</p>';
+               htmlElement += '<h3 class="title text-center">' + _results[i]['description'] + '</h3>';
+               htmlElement += '<p class="info ">'+ outputMatches(_results[i]['matches']) +'</p>';
                htmlElement += '</div>';
                indicators.push(htmlElement) 
 

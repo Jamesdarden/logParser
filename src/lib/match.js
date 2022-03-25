@@ -419,11 +419,12 @@ var protectionStatus =[
   {regex:/.+(client received protection status)\s9.+/ig,info:"Cannot connect to RT service"},
 ]
 
-async function newSSLogic(){
+async function redSSdiagnosisFunction(){
   const pathToDirectory = require('./dialog.js')
   const filePath = pathToDirectory.pathToDirectory
   const returnObj = []
   try {
+    console.log(`${filePath}sysinfo.log`)
     var file = await readFile(`${filePath}sysinfo.log`)
     // console.log(file,"file",typeof(file))
     var bufFile = Buffer.from(file)
@@ -432,18 +433,32 @@ async function newSSLogic(){
     //changes enconding if not utf8
     var actualString = decode(bufFile, encoding).toString('utf8');
     // console.log(actualString,"actual string",typeof(actualString))
-    var autorunSectionReg = /((==== Autoruns).+[\s\S]+(==== Add))/
-    var sysEventSectionReg = /((==== System EventLog ====).+[\s\S].+(==== Application))/
-    var faultBucketSectionReg = /((==== Application EventLog ====).+[\s\S].+(====))/
-    var autorunSectionLog = actualString.match(autorunSectionReg)[0].toString()
-    var sysEventSectionlog = actualString.match(sysEventSectionReg)[0].toString()
-    var faultBucketSectionlog = actualString.match(faultBucketSectionReg)[0].toString()
+    var autorunSectionReg = /((==== Autoruns)[\t\r\s\S]+(==== Add))/i
+    var sysEventSectionReg = /((==== System EventLog ====)[\t\r\s\S]+(==== Application))/i
+    var faultBucketSectionReg = /((==== Application EventLog ====)[\t\r\s\S]+(==== end))/i
+    // var autorunSectionLog = actualString.match(autorunSectionReg)[0]
+    var autorunSectionLog = autorunSectionReg.exec(actualString) 
+
+    // console.log(autorunSectionLog,"autorunSectionlog")
+    // var sysEventSectionlog = actualString.match(sysEventSectionReg)
+    var sysEventSectionlog = sysEventSectionReg.exec(actualString)
+    // console.log(sysEventSectionlog, "sysEventSection")
+    
+    // console.log(sysEventSectionlog,"syseventsectionlog")
+
+    var faultBucketSectionlog = faultBucketSectionReg.exec(actualString)
+    // console.log(faultBucketSectionlog, "faultBucketSectionlogs")
    
-    var autoresult = await sysInfoData(autorunSectionLog)
+    var autoresult = await autoRunData(autorunSectionLog)
     var sysEventResult = await eventLogData(sysEventSectionlog)
     var faultBucketResult = await faultBucketData(faultBucketSectionlog)
 
-    
+   
+    returnObj.push(autoresult)
+    returnObj.push(sysEventResult)
+    returnObj.push(faultBucketResult)
+
+    return returnObj
   } catch (error) {
     console.log(error)
   }
@@ -452,34 +467,38 @@ async function newSSLogic(){
 }
 
 async function faultBucketData(section){
+  if(section == null) return{description:"No fault bucket items in sysinfo.log", matches:""}
   var reg1 =/.+(fault bucket).+rtservice.exe.+/gi
-  var match = section.match(reg1)
-  if (match)return{description:"will contain info about rt service crashing",matches:match}
+  var string = section.toString()
+  var match = string.match(reg1)
+  if (match) return {description:"will contain info about rt service crashing",matches:match}
   return{description:"rt service.exe not found in fault bucket", matches:"no crash items found"}
 }
 
-async function sysInfoData (section){
-  //if null something is removing ss
+async function autoRunData (section){
+  if(section == null) return{description:"no autorun items in sysinfo.log", matches:""}
+  var string = section.toString()
   var reg1 =/.+PCMaticRT.exe.+/gi 
-  var match = section.match(reg1)
-  if(match) return {description:"Supershield found in autoruns",matches:match}
-  return{description:"SuperShield not found in autoruns",matches:"SS is not installed or most likely being removed."}
+  var match = string.match(reg1)
+  if(match) return {description:"Supershield found in autoruns(suggest SS is starting correctly)",matches:match}
+  return{description:"SuperShield not found in autoruns",matches:"Failure to see it here suggests something is removing it or possible not installed"}
 }
 
 async function eventLogData(section){
   var reg1 =/.+rtservice.exe.+/gi
-  var match = section.match(reg1)
-  if(match) return{description:"This section will tell you if the SS service is in fact stopping and how many times. Look at the time stamps",matches:match}
-  return{description:"",matches:"rtservice.exe not found in system event log"}
+  var string = section.toString()
+  var match = string.match(reg1)
+  if(match){ return{description:"This section will tell you if the SS service is in fact stopping and how many times. Look at the time stamps",matches:match}}
+  return{description:"rtservice.exe not found in system event log",matches:"No events captured of SS stopping"}
 }
 
 
 let logFileTypeMatches = {
     ss: [
-        {regex:/.+(malware detected prompt).+[\r\n\s\S]{2}.+(prompt_dialog.cpp).+/igm ,description:"Malware detected prompts"},// not sure if this is correct. 
-        {regex:/.+(Customer).+[\r\n\s\S]{2}.+/ig ,description:"User Actions"},// not sure if this is correct. 
-        {regex:protectionStatus ,description:"Protection Status items"},// not sure if this is correct. 
-        {regex:newSSLogic,desription:"SuperShield"}
+        {regex:redSSdiagnosisFunction,desription:"SuperShield"},
+        {regex:/.+[\t\r\s\S].+(err).+[\t\r\s\S].+(Setting icon color: red).+[\t\r\s\S].+.+[\t\r\s\S].+[\t\r\s\S].+/ig ,description:"SuperShield errors"},// not sure if this is correct. 
+        {regex:/.+(Customer clicked).+[\r\n\s\S]{2}.+/ig ,description:"User Actions"}// not sure if this is correct. 
+        // {regex:protectionStatus ,description:"Protection Status items"}// not sure if this is correct. 
 
     ],
     ScheduleScanLog: [
