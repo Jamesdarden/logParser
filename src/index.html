@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>PC Matic Log parser</title>
+    <title>PC Matic Log parser <span id="versionId"></span></title>
    
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -47,9 +47,17 @@
           <div class="inner three"></div>
         </div>
       
-      
-          <!-- <span class="btn btn-primary" >Click here to select logs</span> -->
-          <div id="content" class="container"></div>
+        <div id="notification" class="hidden">
+          <p id="message"></p>
+          <button id="close-button" onClick="closeNotification()">
+            Close
+          </button>
+          <button id="restart-button" onClick="restartApp()" class="hidden">
+            Restart
+          </button>
+        </div>
+        <!-- <span class="btn btn-primary" >Click here to select logs</span> -->
+        <div id="content" class="container"></div>
       
     </div>
 
@@ -61,8 +69,37 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
    <script>
-     const electron = require('electron');
+      const electron = require('electron');
       const {ipcRenderer, BrowserWindow} = electron;
+      const version = document.getElementById('versionId');
+    
+      ipcRenderer.send('app_version');
+      ipcRenderer.on('app_version', (event, arg) => {
+        ipcRenderer.removeAllListeners('app_version');
+        version.innerText = 'Version ' + arg.version;
+      });
+
+      const notification = document.getElementById('notification');
+      const message = document.getElementById('message');
+      const restartButton = document.getElementById('restart-button');
+      ipcRenderer.on('update_available', () => {
+        ipcRenderer.removeAllListeners('update_available');
+        message.innerText = 'A new update is available. Downloading now...';
+        notification.classList.remove('hidden');
+      });
+      ipcRenderer.on('update_downloaded', () => {
+        ipcRenderer.removeAllListeners('update_downloaded');
+        message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+        restartButton.classList.remove('hidden');
+        notification.classList.remove('hidden');
+      });
+
+      function closeNotification() {
+        notification.classList.add('hidden');
+      }
+      function restartApp() {
+        ipcRenderer.send('restart_app');
+      }
       
      
 

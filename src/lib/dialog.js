@@ -166,6 +166,7 @@ function getFileTypeMatches(fileName) {
       checkScheduler:/.+(checkschedule\[pcmatic\]).*log/ig,
       systemInfo: /.+sysinfo.log/ig,
       pcmaticScanLog:/.+(pcmatic-\d{8})\.log/ig,
+      rtservice:/.+PCMaticRTService-\d{8}\.log/gi,
       unknown:/.+/ig
    }
 
@@ -221,7 +222,7 @@ async function parseLog(file){
   indicators.push(`<h4 class="mb-4">${nameAllCaps?nameAllCaps:""}</h4>`)
    //benchmark('getFileTypeMatches', 'start');
    var fileTypeMatch = getFileTypeMatches(file);// working as expected returns key
-   console.log(`----%%^^^^^filetype Match ${fileTypeMatch} `)
+   // console.log(`----%%^^^^^filetype Match ${fileTypeMatch} `)
    if(fileTypeMatch === "unknown") {
       indicators.push("<h2>The logParser is not set to read "+ nameToDisplay+ " at this time</h2><button id='logfile' class='btn btn-outline-primary'>Choose Another Logfile</button>")
       const window = BrowserWindow.getAllWindows()[0];

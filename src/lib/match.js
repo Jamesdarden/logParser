@@ -501,6 +501,11 @@ let logFileTypeMatches = {
         // {regex:protectionStatus ,description:"Protection Status items"}// not sure if this is correct. 
 
     ],
+    rtService:[
+      {regex:/(.+(our version).+[\s\S\t\r]+.+(new version).+)/gi, description:"If version matches SS is up to date or there is an issue updating"},
+      {regex:/.+(realtime status is \d)[\s\S]+(Send protection status size).+/gi, description:"Shows protection status will show if SS is on (0) or off (1) as well as erros"},
+
+    ],
     ScheduleScanLog: [
       {regex:scanInfo ,description:"Potential Scan Issues"},
       {regex:internetInfo ,description:"Internet"},

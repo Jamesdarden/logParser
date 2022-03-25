@@ -8,6 +8,7 @@ const {
 const path = require("path");
 const fs = require("fs");
 const { fileGetter } = require("./lib/dialog.js");
+const { autoUpdater } = require('electron-updater')
 //require('v8-compile-cache');
 
 // DISABLE_V8_COMPILE_CACHE=1
@@ -55,6 +56,10 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
 
+mainWindow.once('ready-to-show', () => {
+  autoUpdater.checkForUpdatesAndNotify();
+});
+
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
@@ -73,11 +78,13 @@ app.on("activate", () => {
   }
 });
 
-// mainWindow.on('closed', function (){
-//   mainWindow = null;
-// })
+mainWindow.on('closed', function (){
+  mainWindow = null;
+})
 
-
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
 
 // create menu template
 const mainMenuTemplate = [
@@ -151,6 +158,18 @@ const mainMenuTemplate = [
 //     ],
 //   });
 // }
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
 
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";

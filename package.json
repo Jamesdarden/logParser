@@ -13,7 +13,13 @@
     "lint": "echo \"No linting configured\"",
     "make-mac": "npx @electron-forge/cli make --platform darwin",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Jamesdarden/logParser.git"
   },
   "build": {
     "appId": "Log Parser",
