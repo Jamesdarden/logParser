@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>PC Matic Log parser <span id="versionId"></span></title>
+    <title>PC Matic Log parser </title>
    
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -16,9 +16,8 @@
     
   </head>
   <body>
-   
-      
-      <div class="container-fluid row" id="containerbody">
+    <div class="container-fluid row" id="containerbody">
+        <span id="versionId">1.0.0</span>
         <div class="alert alert-warning alert-dismissible fade show float-right hidden" role="alert" id="empty">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -27,7 +26,7 @@
         </div>
         <div id="welcome">
         <h2 class="center-text header">Welcome To the log parser!</h2>
-        <p class="informationText">Currently the log parser can analyze sysinfo.logs , SS logs "pcmatic_rt" , Check Scheduler logs "checkschedule[pcmatic]", Pc matic scan logs "pcmatic-date", Schedule scan logs "scan[pcmatic]"</p>
+        <p class="informationText">Currently the log parser can analyze sysinfo.logs , SS logs "pcmatic_rt" , Check Scheduler logs "checkschedule[pcmatic]", Pc matic scan logs "pcmatic-date", Schedule scan logs "scan[pcmatic]", Pc matic RTservice logs</p>
         <button class="btn btn-outline-info container col-9 bottom" style="margin-left: 30px;width: 90%" onclick="unzipFile();">Unzip Log</button>
         </div>
     
@@ -72,13 +71,15 @@
       const electron = require('electron');
       const {ipcRenderer, BrowserWindow} = electron;
       const version = document.getElementById('versionId');
-    
+
+      // app version event to display version
       ipcRenderer.send('app_version');
       ipcRenderer.on('app_version', (event, arg) => {
         ipcRenderer.removeAllListeners('app_version');
         version.innerText = 'Version ' + arg.version;
       });
 
+      // notification of update available if available
       const notification = document.getElementById('notification');
       const message = document.getElementById('message');
       const restartButton = document.getElementById('restart-button');
@@ -129,6 +130,7 @@
         }
 
       var searchBox = document.getElementById('search')
+      // if key pressed is enter get value of search box
       searchBox.addEventListener("keyup", (e)=>{
         if(e.keyCode === 13){
           getValue();

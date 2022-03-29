@@ -4,6 +4,7 @@ const {
   app,
   BrowserWindow,
   Menu,
+  ipcMain
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
@@ -22,7 +23,7 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
-let mainWindow;
+var mainWindow;
 
 const createWindow = () => {
   
@@ -49,16 +50,23 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "index.html"));
 
+  
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+
 app.on("ready", createWindow);
 
-mainWindow.once('ready-to-show', () => {
-  autoUpdater.checkForUpdatesAndNotify();
-});
+
+  
+
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -78,10 +86,15 @@ app.on("activate", () => {
   }
 });
 
-mainWindow.on('closed', function (){
-  mainWindow = null;
-})
+// if mainwindw is defined
+if (mainWindow){
+  mainWindow.on('closed', function (){
+    mainWindow = null;
+  })
 
+}
+
+// sending app version on app_version event
 ipcMain.on('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
 });
@@ -112,6 +125,7 @@ const mainMenuTemplate = [
     },
   },
   {
+    // needed for mac versions
     label: 'View',
     submenu: [
       { role: 'reload' },
@@ -159,17 +173,7 @@ const mainMenuTemplate = [
 //   });
 // }
 
-autoUpdater.on('update-available', () => {
-  mainWindow.webContents.send('update_available');
-});
 
-autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('update_downloaded');
-});
-
-ipcMain.on('restart_app', () => {
-  autoUpdater.quitAndInstall();
-});
 
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
@@ -177,3 +181,17 @@ ELECTRON_ENABLE_LOGGING = 1;
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// update program if new version logic
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
+
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});

@@ -420,35 +420,29 @@ var protectionStatus =[
 ]
 
 async function redSSdiagnosisFunction(){
+  // gets file path to folder of current file
   const pathToDirectory = require('./dialog.js')
   const filePath = pathToDirectory.pathToDirectory
   const returnObj = []
   try {
-    console.log(`${filePath}sysinfo.log`)
+    //loads sys info file in mem to read
     var file = await readFile(`${filePath}sysinfo.log`)
-    // console.log(file,"file",typeof(file))
     var bufFile = Buffer.from(file)
-    // console.log(bufFile,"buffile")
     var encoding = detect(bufFile);
     //changes enconding if not utf8
     var actualString = decode(bufFile, encoding).toString('utf8');
-    // console.log(actualString,"actual string",typeof(actualString))
+    
+    // regex for grabbing specific secions in the sysinfo log to parse
     var autorunSectionReg = /((==== Autoruns)[\t\r\s\S]+(==== Add))/i
     var sysEventSectionReg = /((==== System EventLog ====)[\t\r\s\S]+(==== Application))/i
     var faultBucketSectionReg = /((==== Application EventLog ====)[\t\r\s\S]+(==== end))/i
-    // var autorunSectionLog = actualString.match(autorunSectionReg)[0]
-    var autorunSectionLog = autorunSectionReg.exec(actualString) 
-
-    // console.log(autorunSectionLog,"autorunSectionlog")
-    // var sysEventSectionlog = actualString.match(sysEventSectionReg)
-    var sysEventSectionlog = sysEventSectionReg.exec(actualString)
-    // console.log(sysEventSectionlog, "sysEventSection")
     
-    // console.log(sysEventSectionlog,"syseventsectionlog")
-
+    // captured sections
+    var autorunSectionLog = autorunSectionReg.exec(actualString) 
+    var sysEventSectionlog = sysEventSectionReg.exec(actualString)
     var faultBucketSectionlog = faultBucketSectionReg.exec(actualString)
-    // console.log(faultBucketSectionlog, "faultBucketSectionlogs")
    
+    //running match functions on each section returning if matches are found or not
     var autoresult = await autoRunData(autorunSectionLog)
     var sysEventResult = await eventLogData(sysEventSectionlog)
     var faultBucketResult = await faultBucketData(faultBucketSectionlog)
@@ -468,6 +462,7 @@ async function redSSdiagnosisFunction(){
 
 async function faultBucketData(section){
   if(section == null) return{description:"No fault bucket items in sysinfo.log", matches:""}
+ // checkinf for fault bucket items with rtservice
   var reg1 =/.+(fault bucket).+rtservice.exe.+/gi
   var string = section.toString()
   var match = string.match(reg1)
@@ -478,6 +473,7 @@ async function faultBucketData(section){
 async function autoRunData (section){
   if(section == null) return{description:"no autorun items in sysinfo.log", matches:""}
   var string = section.toString()
+  // checking rtservice in autoruns
   var reg1 =/.+PCMaticRT.exe.+/gi 
   var match = string.match(reg1)
   if(match) return {description:"Supershield found in autoruns(suggest SS is starting correctly)",matches:match}
@@ -485,6 +481,7 @@ async function autoRunData (section){
 }
 
 async function eventLogData(section){
+  // checks if ss is stopping if so what is causing it
   var reg1 =/.+rtservice.exe.+/gi
   var string = section.toString()
   var match = string.match(reg1)
@@ -496,14 +493,14 @@ async function eventLogData(section){
 let logFileTypeMatches = {
     ss: [
         {regex:redSSdiagnosisFunction,desription:"SuperShield"},
-        {regex:/.+[\t\r\s\S].+(err).+[\t\r\s\S].+(Setting icon color: red).+[\t\r\s\S].+.+[\t\r\s\S].+[\t\r\s\S].+/ig ,description:"SuperShield errors"},// not sure if this is correct. 
-        {regex:/.+(Customer clicked).+[\r\n\s\S]{2}.+/ig ,description:"User Actions"}// not sure if this is correct. 
+        {regex:/.+[\t\r\s\S].+(err).+[\s\S].+(Setting icon color: red).+[\s\S].+[\s\S].+[\s\S].+/ig ,description:"SuperShield errors"},// not sure if this is correct. 
+        {regex:/.+(Customer clicked).+[\s\S]{2}.+/ig ,description:"User Actions"}// not sure if this is correct. 
         // {regex:protectionStatus ,description:"Protection Status items"}// not sure if this is correct. 
 
     ],
     rtService:[
-      {regex:/(.+(our version).+[\s\S\t\r]+.+(new version).+)/gi, description:"If version matches SS is up to date or there is an issue updating"},
-      {regex:/.+(realtime status is \d)[\s\S]+(Send protection status size).+/gi, description:"Shows protection status will show if SS is on (0) or off (1) as well as erros"},
+      {regex:/.+(our version).+(.+\r\n){4}/gi, description:"If version matches SS is up to date or there is an issue updating"},
+      {regex:/(.+\r\n){4}.+(alerting active user [^0])(.+\r\n){2}/gi, description:"Items below will show SS status other then being on/green/0"},
 
     ],
     ScheduleScanLog: [
